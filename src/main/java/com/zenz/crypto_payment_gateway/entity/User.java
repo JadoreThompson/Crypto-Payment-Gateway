@@ -36,6 +36,6 @@ public class User {
     // Operations
     @PrePersist
     public void prePersist() {
-        createdAt =System.currentTimeMillis();
+        createdAt = System.currentTimeMillis();
     }
 }
