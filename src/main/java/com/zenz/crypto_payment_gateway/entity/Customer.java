@@ -11,5 +11,23 @@ public class Customer {
     @GeneratedValue(strategy= GenerationType.UUID)
     private String customerId;
 
+    @Column(nullable = false)
     private String nickname;
+
+    private String email;
+
+    private byte[] metadata;
+
+    @Column(nullable = false, updatable = false)
+    private long createdAt;
+
+    // Relationships
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = System.currentTimeMillis();
+    }
 }
