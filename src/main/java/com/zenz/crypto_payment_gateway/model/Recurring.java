@@ -1,4 +1,4 @@
-package com.zenz.crypto_payment_gateway.entity;
+package com.zenz.crypto_payment_gateway.model;
 
 import com.zenz.crypto_payment_gateway.enums.PricingInterval;
 import jakarta.persistence.Embeddable;

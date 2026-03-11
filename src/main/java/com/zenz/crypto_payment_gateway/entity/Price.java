@@ -1,7 +1,7 @@
 package com.zenz.crypto_payment_gateway.entity;
 
 import com.zenz.crypto_payment_gateway.enums.PricingType;
-import jakarta.annotation.Nullable;
+import com.zenz.crypto_payment_gateway.model.Recurring;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
