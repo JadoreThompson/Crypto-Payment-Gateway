@@ -23,7 +23,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-    
+
     private final JWTService jwtService;
     private final UserRepository userRepository;
     
@@ -42,19 +42,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             
             if (userIdOpt.isPresent()) {
                 UUID userId = UUID.fromString(userIdOpt.get());
-
                 User user = userRepository.findById(userId).orElse(null);
                 
                 if (user != null) {
-                    // Create authentication token
                     UsernamePasswordAuthenticationToken authentication = 
                             new UsernamePasswordAuthenticationToken(
                                     user,
                                     null,
                                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
                             );
-                    
-                    // Set authentication in security context
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
@@ -67,7 +64,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (JWT_COOKIE_NAME.equals(cookie.getName())) {
+                if (cookie.getName().equals(JWT_COOKIE_NAME)) {
                     return cookie.getValue();
                 }
             }
