@@ -1,5 +1,6 @@
 package com.zenz.crypto_payment_gateway.service;
 
+import com.zenz.crypto_payment_gateway.api.error.ResourceNotFound;
 import com.zenz.crypto_payment_gateway.api.route.merchant.request.CreateMerchantRequest;
 import com.zenz.crypto_payment_gateway.api.route.merchant.request.UpdateMerchantRequest;
 import com.zenz.crypto_payment_gateway.api.route.merchant.response.MerchantResponse;
@@ -32,7 +33,13 @@ public class MerchantService {
     }
     
     public Merchant getMerchantByIdAndUserId(UUID merchantId, UUID userId) {
-        return merchantRepository.findByMerchantIdAndUserId(merchantId, userId).orElse(null);
+        Merchant merchant = merchantRepository.findByMerchantIdAndUserId(merchantId, userId).orElse(null);
+        if (merchant == null) {
+            throw new ResourceNotFound(
+                    String.format("Failed to find merchant with id %s for user", merchantId)
+            );
+        }
+        return merchant;
     }
     
     public List<Merchant> getMerchantsByUser(User user) {

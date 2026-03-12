@@ -1,5 +1,8 @@
 package com.zenz.crypto_payment_gateway.api.route.merchant;
 
+import com.zenz.crypto_payment_gateway.api.error.ResourceNotFound;
+import com.zenz.crypto_payment_gateway.api.model.response.ErrorResponse;
+import com.zenz.crypto_payment_gateway.api.model.response.SimpleErrorDetail;
 import com.zenz.crypto_payment_gateway.api.route.merchant.request.CreateMerchantRequest;
 import com.zenz.crypto_payment_gateway.api.route.merchant.request.UpdateMerchantRequest;
 import com.zenz.crypto_payment_gateway.api.route.merchant.response.MerchantResponse;
@@ -7,6 +10,7 @@ import com.zenz.crypto_payment_gateway.entity.Merchant;
 import com.zenz.crypto_payment_gateway.entity.User;
 import com.zenz.crypto_payment_gateway.service.MerchantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/merchant")
+@RequestMapping("/merchants/")
 @RequiredArgsConstructor
 public class MerchantController {
     
@@ -30,7 +34,7 @@ public class MerchantController {
         return ResponseEntity.ok(merchantService.toResponse(merchant));
     }
 
-    @GetMapping("/{merchantId}")
+    @GetMapping("/{merchantId}/")
     public ResponseEntity<MerchantResponse> getMerchant(
             @AuthenticationPrincipal User user,
             @PathVariable UUID merchantId
@@ -38,13 +42,13 @@ public class MerchantController {
         Merchant merchant = merchantService.getMerchantByIdAndUserId(merchantId, user.getUserId());
         
         if (merchant == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFound("Merchant not found");
         }
         
         return ResponseEntity.ok(merchantService.toResponse(merchant));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<MerchantResponse>> getMerchants(@AuthenticationPrincipal User user) {
         List<Merchant> merchants = merchantService.getMerchantsByUser(user);
         
@@ -55,7 +59,7 @@ public class MerchantController {
         return ResponseEntity.ok(responses);
     }
 
-    @PutMapping("/{merchantId}")
+    @PutMapping("/{merchantId}/")
     public ResponseEntity<MerchantResponse> updateMerchant(
             @AuthenticationPrincipal User user,
             @PathVariable UUID merchantId,
