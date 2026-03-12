@@ -4,6 +4,9 @@ services:
         container_name: cpg_postgres
         ports:
           - 5555:5432
+        environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: cpg
         volumes:
           - cpg_postgres:/var/lib/postgresql
 
