@@ -15,6 +15,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID productId;
 
+    @Id
+    @Column(nullable = false, updatable = false)
+    private UUID merchantId;
+
     @Column(nullable = false)
     private String name;
 
