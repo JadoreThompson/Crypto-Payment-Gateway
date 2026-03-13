@@ -1,6 +1,7 @@
 package com.zenz.crypto_payment_gateway.api;
 
 import com.zenz.crypto_payment_gateway.api.error.ResourceNotFound;
+import com.zenz.crypto_payment_gateway.api.error.ServerError;
 import com.zenz.crypto_payment_gateway.api.model.response.ErrorResponse;
 import com.zenz.crypto_payment_gateway.api.model.response.SimpleErrorDetail;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFound exc) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(new SimpleErrorDetail(exc.getMessage())));
+    }
+
+    @ExceptionHandler(ServerError.class)
+    public ResponseEntity<ErrorResponse> handleServerError(ServerError exc) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(new SimpleErrorDetail(exc.getMessage())));
     }
 }

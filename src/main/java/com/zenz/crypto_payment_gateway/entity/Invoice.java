@@ -3,6 +3,7 @@ package com.zenz.crypto_payment_gateway.entity;
 import com.zenz.crypto_payment_gateway.enums.InvoiceStatus;
 import com.zenz.crypto_payment_gateway.model.InvoiceLine;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID invoiceId;
 
+    @NotNull
+    private UUID customerId;
+
     private long amountDue;
 
     private long amountPaid;
@@ -24,8 +28,10 @@ public class Invoice {
 
     private int attempts;
 
-    @Embedded
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<InvoiceLine> lines;
+
+    private String metadata;
 
     private InvoiceStatus status;
 
