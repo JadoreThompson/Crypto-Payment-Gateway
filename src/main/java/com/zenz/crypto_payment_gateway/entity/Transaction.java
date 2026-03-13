@@ -15,6 +15,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID transactionId;
 
+    @Column(nullable = false)
+    private UUID invoiceId;
+
     @Column(nullable = false, updatable = false)
     @Positive
     private long amountExpected;
