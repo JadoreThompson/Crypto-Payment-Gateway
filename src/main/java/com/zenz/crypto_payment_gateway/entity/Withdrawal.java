@@ -16,6 +16,9 @@ public class Withdrawal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID withdrawalId;
 
+    @Column(nullable = false)
+    private UUID merchantId;
+
     @Positive
     @Column(nullable = false, updatable = false)
     private long amount;
