@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -11,7 +12,7 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
-    private String customerId;
+    private UUID customerId;
 
     @Column(nullable = false)
     private String nickname;
