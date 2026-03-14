@@ -21,6 +21,7 @@ public class MerchantService {
     
     public Merchant createMerchant(User user, CreateMerchantRequest request) {
         Merchant merchant = new Merchant();
+        merchant.setUserId(user.getUserId());
         merchant.setName(request.getName());
         merchant.setDescription(request.getDescription());
         merchant.setUser(user);

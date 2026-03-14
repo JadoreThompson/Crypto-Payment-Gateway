@@ -64,7 +64,7 @@ class MerchantControllerTest {
     private User testUser;
     private Merchant testMerchant;
     private String testToken;
-    private String testMerchantId;
+    private UUID testMerchantId;
     private String testMerchantName;
     private String testMerchantDescription;
 
@@ -73,7 +73,7 @@ class MerchantControllerTest {
         objectMapper = new ObjectMapper();
 
         testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test-token";
-        testMerchantId = UUID.randomUUID().toString();
+        testMerchantId = UUID.randomUUID();
         testMerchantName = "Test Merchant";
         testMerchantDescription = "A test merchant description";
 
@@ -112,9 +112,7 @@ class MerchantControllerTest {
         return response;
     }
 
-    // ========================================
     // CREATE MERCHANT ENDPOINT TESTS
-    // ========================================
 
     @Test
     @DisplayName("Create Merchant: Should create merchant successfully with valid data")
@@ -134,7 +132,7 @@ class MerchantControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.merchantId").value(testMerchantId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.merchantId").value(testMerchantId.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(testMerchantName))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testMerchantDescription));
 
@@ -364,23 +362,21 @@ class MerchantControllerTest {
         Mockito.verify(merchantService, Mockito.never()).createMerchant(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
-    // ========================================
     // GET MERCHANT BY ID ENDPOINT TESTS
-    // ========================================
 
     @Test
     @DisplayName("Get Merchant: Should return merchant when authenticated and owner")
     void getMerchant_whenAuthenticatedAndOwner_shouldReturnMerchant() throws Exception {
         setupAuthentication();
 
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.toResponse(testMerchant)).thenReturn(createMerchantResponse(testMerchant));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/merchants/" + testMerchantId + "/")
                 .cookie(new Cookie(JWTAuthenticationFilter.JWT_COOKIE_NAME, testToken)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.merchantId").value(testMerchantId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.merchantId").value(testMerchantId.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(testMerchantName))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testMerchantDescription));
     }
@@ -413,7 +409,7 @@ class MerchantControllerTest {
     void getMerchant_shouldReturnJsonContentType() throws Exception {
         setupAuthentication();
 
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.toResponse(testMerchant)).thenReturn(createMerchantResponse(testMerchant));
 
@@ -432,9 +428,7 @@ class MerchantControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    // ========================================
     // GET ALL MERCHANTS ENDPOINT TESTS
-    // ========================================
 
     @Test
     @DisplayName("Get Merchants: Should return all merchants for authenticated user")
@@ -442,7 +436,7 @@ class MerchantControllerTest {
         setupAuthentication();
 
         Merchant merchant2 = new Merchant();
-        merchant2.setMerchantId(UUID.randomUUID().toString());
+        merchant2.setMerchantId(UUID.randomUUID());
         merchant2.setName("Second Merchant");
         merchant2.setDescription("Second description");
         merchant2.setUser(testUser);
@@ -497,9 +491,7 @@ class MerchantControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    // ========================================
     // UPDATE MERCHANT ENDPOINT TESTS
-    // ========================================
 
     @Test
     @DisplayName("Update Merchant: Should update merchant name successfully")
@@ -517,7 +509,7 @@ class MerchantControllerTest {
         updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.updateMerchant(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UpdateMerchantRequest.class)))
                 .thenReturn(updatedMerchant);
@@ -547,7 +539,7 @@ class MerchantControllerTest {
         updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.updateMerchant(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UpdateMerchantRequest.class)))
                 .thenReturn(updatedMerchant);
@@ -579,7 +571,7 @@ class MerchantControllerTest {
         updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.updateMerchant(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UpdateMerchantRequest.class)))
                 .thenReturn(updatedMerchant);
@@ -604,7 +596,7 @@ class MerchantControllerTest {
         request.setName("New Name");
 
         Mockito.when(merchantService.getMerchantByIdAndUserId(randomMerchantId, testUser.getUserId()))
-                .thenReturn(null);
+                .thenThrow(new ResourceNotFound("Merchant not found"));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/merchants/" + randomMerchantId + "/")
                 .cookie(new Cookie(JWTAuthenticationFilter.JWT_COOKIE_NAME, testToken))
@@ -688,9 +680,7 @@ class MerchantControllerTest {
         Mockito.verify(merchantService, Mockito.never()).updateMerchant(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
-    // ========================================
     // SECURITY TESTS
-    // ========================================
 
     @Test
     @DisplayName("Security: Should not expose sensitive data in error responses")
@@ -769,9 +759,7 @@ class MerchantControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    // ========================================
     // EDGE CASES TESTS
-    // ========================================
 
     @Test
     @DisplayName("Edge Case: Should handle merchant name with special characters")
@@ -868,7 +856,7 @@ class MerchantControllerTest {
         request.setDescription(null);
 
         // When both fields are null, merchant should remain unchanged
-        Mockito.when(merchantService.getMerchantByIdAndUserId(UUID.fromString(testMerchantId), testUser.getUserId()))
+        Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
                 .thenReturn(testMerchant);
         Mockito.when(merchantService.updateMerchant(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UpdateMerchantRequest.class)))
                 .thenReturn(testMerchant);

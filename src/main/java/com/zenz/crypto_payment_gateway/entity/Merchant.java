@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -11,7 +12,10 @@ import java.util.List;
 public class Merchant {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String merchantId;
+    private UUID merchantId;
+
+    @Column(nullable = false, updatable = false)
+    private UUID userId;
 
     @Column(nullable = false)
     private String name;
