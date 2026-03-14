@@ -5,6 +5,7 @@ import com.zenz.crypto_payment_gateway.entity.Transaction;
 import com.zenz.crypto_payment_gateway.entity.User;
 import com.zenz.crypto_payment_gateway.service.MerchantService;
 import com.zenz.crypto_payment_gateway.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,6 +39,9 @@ public class TransactionController {
             @PathVariable UUID merchantId,
             @PathVariable UUID transactionId
     ) {
+        System.out.println("Merchant Id: " + merchantId);
+        System.out.println("Transaction Id: " + transactionId);
+
         merchantService.getMerchantByIdAndUserId(merchantId, user.getUserId());
         Transaction transaction = transactionService.getTransactionById(transactionId);
         return ResponseEntity.ok(transactionService.toResponse(transaction));
