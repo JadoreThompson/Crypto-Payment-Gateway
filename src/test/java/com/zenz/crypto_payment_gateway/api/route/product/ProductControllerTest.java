@@ -95,13 +95,11 @@ class ProductControllerTest {
         testMerchant.setMerchantId(testMerchantId);
         testMerchant.setName("Test Merchant");
         testMerchant.setDescription("Test merchant description");
-        testMerchant.setUser(testUser);
         testMerchant.setCreatedAt(System.currentTimeMillis());
 
         testProduct = new Product();
         testProduct.setProductId(testProductId);
         testProduct.setMerchantId(testMerchantId);
-        testProduct.setMerchant(testMerchant);
         testProduct.setName(testProductName);
         testProduct.setDescription(testProductDescription);
         testProduct.setCreatedAt(System.currentTimeMillis());

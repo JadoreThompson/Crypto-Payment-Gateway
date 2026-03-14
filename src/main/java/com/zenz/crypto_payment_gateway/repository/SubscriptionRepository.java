@@ -14,7 +14,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, UUID
 
     List<Subscription> findByMerchantId(UUID merchantId);
 
-    Subscription findByIdAndMerchantId(UUID id, UUID merchantId);
+    Subscription findBySubscriptionIdAndMerchantId(UUID id, UUID merchantId);
 
-    Subscription findByIdAndCustomerId(UUID id, UUID customerId);
+//    Subscription findByIdAndCustomerId(UUID id, UUID customerId);
 }

@@ -24,7 +24,7 @@ public class TransactionService {
     }
 
     public Transaction getTransactionByIdAndInvoiceId(UUID transactionId, UUID invoiceId) {
-        Transaction transaction = transactionRepository.findByIdAndInvoiceId(transactionId, invoiceId);
+        Transaction transaction = transactionRepository.findByTransactionIdAndInvoiceId(transactionId, invoiceId);
         if (transaction == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find transaction with id %s for invoice id %s", transactionId, invoiceId)
@@ -46,7 +46,7 @@ public class TransactionService {
     }
 
     public Transaction getTransactionByIdAndMerchantId(UUID transactionId, UUID merchantId) {
-        Transaction transaction = transactionRepository.findByIdAndMerchantId(transactionId, merchantId);
+        Transaction transaction = transactionRepository.findByTransactionIdAndMerchantId(transactionId, merchantId);
         if (transaction == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find transaction with id %s for merchant", transactionId)
@@ -56,7 +56,7 @@ public class TransactionService {
     }
 
     public Transaction getTransactionByIdAndInvoiceIdAndMerchantId(UUID transactionId, UUID invoiceId, UUID merchantId) {
-        Transaction transaction = transactionRepository.findByIdAndInvoiceIdAndMerchantId(transactionId, invoiceId, merchantId);
+        Transaction transaction = transactionRepository.findByTransactionIdAndInvoiceIdAndMerchantId(transactionId, invoiceId, merchantId);
         if (transaction == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find transaction with id %s for invoice id %s and merchant", transactionId, invoiceId)

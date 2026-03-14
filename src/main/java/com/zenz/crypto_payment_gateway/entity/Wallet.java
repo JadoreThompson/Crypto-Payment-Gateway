@@ -14,7 +14,7 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID walletId;
 
-    @Column(nullable = false)
+    @Column(name="merchant_id", nullable = false, updatable = false)
     private UUID merchantId;
 
     @Column(nullable = false)
@@ -25,9 +25,4 @@ public class Wallet {
 
     @Column(nullable = false)
     private String walletAddress;
-
-    // Relationships
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "merchant_id", nullable = false)
-    private Merchant merchant;
 }

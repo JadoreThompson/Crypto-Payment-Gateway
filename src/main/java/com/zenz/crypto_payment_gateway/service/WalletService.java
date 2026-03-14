@@ -24,7 +24,7 @@ public class WalletService {
     }
 
     public Wallet getWalletByIdAndMerchantId(UUID walletId, UUID merchantId) {
-        Wallet wallet = walletRepository.findByIdAndMerchantId(walletId, merchantId);
+        Wallet wallet = walletRepository.findByWalletIdAndMerchantId(walletId, merchantId);
         if (wallet == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find wallet with id %s for merchant", walletId)

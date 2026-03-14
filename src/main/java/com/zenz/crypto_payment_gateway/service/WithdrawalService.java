@@ -37,7 +37,7 @@ public class WithdrawalService {
     }
 
     public Withdrawal getWithdrawalByIdAndMerchantId(UUID withdrawalId, UUID merchantId) {
-        Withdrawal withdrawal = withdrawalRepository.findByIdAndMerchantId(withdrawalId, merchantId);
+        Withdrawal withdrawal = withdrawalRepository.findByWalletIdAndMerchantId(withdrawalId, merchantId);
         if (withdrawal == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find withdrawal with id %s for merchant", withdrawalId)

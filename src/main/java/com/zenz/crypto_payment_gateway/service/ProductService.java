@@ -7,19 +7,17 @@ import com.zenz.crypto_payment_gateway.api.route.product.response.ProductRespons
 import com.zenz.crypto_payment_gateway.entity.Product;
 import com.zenz.crypto_payment_gateway.repository.MerchantRepository;
 import com.zenz.crypto_payment_gateway.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
     private ProductRepository productRepository;
     private MerchantRepository merchantRepository;
-
-//    public Product createProduct(Product product) {
-//        return productRepository.save(product);
-//    }
 
     public Product createProduct(CreateProductRequest request, UUID merchantId) {
         Product product = new Product();
@@ -46,7 +44,7 @@ public class ProductService {
     }
 
     public Product getProductsByIdAndMerchantId(UUID id, UUID merchantId) {
-        Product product = productRepository.findByIdAndMerchantId(id, merchantId);
+        Product product = productRepository.findByProductIdAndMerchantId(id, merchantId);
         if (product == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find product with id %s for merchant id %s", id, merchantId)

@@ -16,8 +16,11 @@ public class Withdrawal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID withdrawalId;
 
-    @Column(nullable = false)
+    @Column(name="merchant_id",nullable = false, updatable = false)
     private UUID merchantId;
+
+    @Column(name="wallet_id" , nullable = false, updatable = false)
+    private UUID walletId;
 
     @Positive
     @Column(nullable = false, updatable = false)
@@ -39,11 +42,6 @@ public class Withdrawal {
     private long createdAt;
 
     private long completedAt;
-
-    // Relationships
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "merchant_id", nullable = false)
-    private Merchant merchant;
 
     // Operations
 

@@ -15,13 +15,16 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID subscriptionId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="merchant_id" , nullable = false, updatable = false)
+    private UUID merchantId;
+
+    @Column(name="customer_id", nullable = false, updatable = false)
     private UUID customerId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="product_id", nullable = false, updatable = false)
     private UUID productId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="price_id",nullable = false, updatable = false)
     private UUID priceId;
 
     @Positive
@@ -34,20 +37,6 @@ public class Subscription {
 
     @Column(nullable = false, updatable = false)
     private long createdAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false, insertable = false, updatable = false)
-    private Customer customer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
-    private Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "price_id", nullable = false, insertable = false, updatable = false)
-    private Price price;
 
     // Operations
 

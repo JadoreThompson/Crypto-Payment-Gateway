@@ -16,5 +16,5 @@ public interface PriceRepository extends JpaRepository<Price, UUID> {
 
     public List<Price> findByProductId(UUID productId);
 
-    public Price findByIdAndProductId(UUID id, UUID productId);
+    public Price findByPriceIdAndProductId(UUID id, UUID productId);
 }

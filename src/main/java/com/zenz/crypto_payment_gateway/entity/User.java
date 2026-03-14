@@ -24,13 +24,6 @@ public class User {
     @Column(nullable = false, updatable = false)
     private long createdAt;
 
-    // Relationships
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Merchant> merchants;
-
-    // Operations
-
     @PrePersist
     public void prePersist() {
         createdAt = System.currentTimeMillis();

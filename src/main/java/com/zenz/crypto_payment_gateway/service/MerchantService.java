@@ -24,8 +24,7 @@ public class MerchantService {
         merchant.setUserId(user.getUserId());
         merchant.setName(request.getName());
         merchant.setDescription(request.getDescription());
-        merchant.setUser(user);
-        
+
         return merchantRepository.save(merchant);
     }
     
@@ -34,7 +33,7 @@ public class MerchantService {
     }
     
     public Merchant getMerchantByIdAndUserId(UUID merchantId, UUID userId) {
-        Merchant merchant = merchantRepository.findByIdAndUserId(merchantId, userId).orElse(null);
+        Merchant merchant = merchantRepository.findByMerchantIdAndUserId(merchantId, userId).orElse(null);
         if (merchant == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find merchant with id %s for user", merchantId)
@@ -43,10 +42,10 @@ public class MerchantService {
         return merchant;
     }
     
-    public List<Merchant> getMerchantsByUser(User user) {
-        return merchantRepository.findByUser(user);
-    }
-    
+//    public List<Merchant> getMerchantsByUser(User user) {
+//        return merchantRepository.findByUser(user);
+//    }
+
     public List<Merchant> getMerchantsByUserId(UUID userId) {
         return merchantRepository.findByUserId(userId);
     }

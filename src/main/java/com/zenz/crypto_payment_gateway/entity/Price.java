@@ -16,7 +16,10 @@ public class Price {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID priceId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="merchant_id" , nullable = false, updatable = false)
+    private UUID merchantId;
+
+    @Column(name="product_id",nullable = false, updatable = false)
     private UUID productId;
 
     @Column(nullable = false)
@@ -33,10 +36,4 @@ public class Price {
     private String currency;
 
     private String metadata;
-
-    // Relationships
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
 }

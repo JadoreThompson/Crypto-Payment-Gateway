@@ -14,6 +14,9 @@ public class Customer {
     @GeneratedValue(strategy= GenerationType.UUID)
     private UUID customerId;
 
+    @Column(name="merchant_id" , nullable = false, updatable = false)
+    private UUID merchantId;
+
     @Column(nullable = false)
     private String nickname;
 
@@ -23,18 +26,6 @@ public class Customer {
 
     @Column(nullable = false, updatable = false)
     private long createdAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "merchant_id", nullable = false)
-    private Merchant merchant;
-
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Invoice> invoices;
-
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Subscription> subscriptions;
 
     @PrePersist
     public void prePersist() {

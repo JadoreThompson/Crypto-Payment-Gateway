@@ -22,7 +22,7 @@ public class PriceService {
     private final ProductRepository productRepository;
 
     public Price createPrice(UUID merchantId, CreatePriceRequest request) {
-        Product product = productRepository.findByIdAndMerchantId(request.getProductId(), merchantId);
+        Product product = productRepository.findByProductIdAndMerchantId(request.getProductId(), merchantId);
         if (product == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find product with id %s", request.getProductId())
@@ -30,11 +30,12 @@ public class PriceService {
         }
 
         Price price = new Price();
+        price.setMerchantId(merchantId);
+        price.setProductId(request.getProductId());
         price.setAmount(request.getAmount());
         price.setPricingType(request.getPricingType());
         price.setCurrency(request.getCurrency());
         price.setProductId(product.getProductId());
-        price.setProduct(product);
         price.setRecurring(request.getRecurring());
 
         return priceRepository.save(price);
@@ -48,7 +49,7 @@ public class PriceService {
     }
 
     public Price getPriceByIdAndProductId(UUID priceId, UUID productId) {
-        Price price = priceRepository.findByIdAndProductId(priceId, productId);
+        Price price = priceRepository.findByPriceIdAndProductId(priceId, productId);
         if (price == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find price with id %s for product id %s", priceId, productId)
@@ -87,7 +88,7 @@ public class PriceService {
     public PriceResponse toResponse(Price price) {
         PriceResponse response = new PriceResponse();
         response.setPriceId(price.getPriceId());
-        response.setProductId(price.getProduct().getProductId());
+        response.setProductId(price.getProductId());
         response.setAmount(price.getAmount());
         response.setPricingType(price.getPricingType());
         response.setCurrency(price.getCurrency());

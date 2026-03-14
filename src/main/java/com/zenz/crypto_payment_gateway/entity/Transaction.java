@@ -15,7 +15,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID transactionId;
 
-    @Column(nullable = false)
+    @Column(name="merchant_id" , nullable = false, updatable = false)
+    private UUID merchantId;
+
+    @Column(name="invoice_id", nullable = false, updatable = false)
     private UUID invoiceId;
 
     @Column(nullable = false, updatable = false)
@@ -49,12 +52,6 @@ public class Transaction {
     private long createdAt;
 
     private long completedAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invoice_id", nullable = false)
-    private Invoice invoice;
 
     // Operations
 

@@ -14,7 +14,7 @@ public class Merchant {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID merchantId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="user_id", nullable = false, updatable = false)
     private UUID userId;
 
     @Column(nullable = false)
@@ -24,24 +24,6 @@ public class Merchant {
 
     @Column(nullable = false, updatable = false)
     private long createdAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Product> products;
-
-    @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Customer> customers;
-
-    @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY)
-    private List<Wallet> wallets;
-
-    @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY)
-    private List<Withdrawal> withdrawals;
 
     // Operations
 

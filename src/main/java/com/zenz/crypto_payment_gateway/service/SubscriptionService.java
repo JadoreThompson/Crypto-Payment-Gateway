@@ -28,21 +28,21 @@ public class SubscriptionService {
     private final PriceRepository priceRepository;
 
     public Subscription createSubscription(UUID merchantId, CreateSubscriptionRequest request) {
-        Customer customer = customerRepository.findByIdAndMerchantId(request.getCustomerId(), merchantId);
+        Customer customer = customerRepository.findByCustomerIdAndMerchantId(request.getCustomerId(), merchantId);
         if (customer == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find customer with id %s for merchant", request.getCustomerId())
             );
         }
 
-        Product product = productRepository.findByIdAndMerchantId(request.getProductId(), merchantId);
+        Product product = productRepository.findByProductIdAndMerchantId(request.getProductId(), merchantId);
         if (product == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find product with id %s for merchant", request.getProductId())
             );
         }
 
-        Price price = priceRepository.findByIdAndProductId(request.getPriceId(), request.getProductId());
+        Price price = priceRepository.findByPriceIdAndProductId(request.getPriceId(), request.getProductId());
         if (price == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find price with id %s for product", request.getPriceId())
@@ -68,7 +68,7 @@ public class SubscriptionService {
     }
 
     public Subscription getSubscriptionByIdAndMerchantId(UUID subscriptionId, UUID merchantId) {
-        Subscription subscription = subscriptionRepository.findByIdAndMerchantId(subscriptionId, merchantId);
+        Subscription subscription = subscriptionRepository.findBySubscriptionIdAndMerchantId(subscriptionId, merchantId);
         if (subscription == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find subscription with id %s for merchant", subscriptionId)

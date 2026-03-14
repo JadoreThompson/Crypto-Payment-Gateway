@@ -12,5 +12,5 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
     List<Wallet> findByMerchantId(UUID merchantId);
 
-    Wallet findByIdAndMerchantId(UUID id, UUID merchantId);
+    Wallet findByWalletIdAndMerchantId(UUID id, UUID merchantId);
 }

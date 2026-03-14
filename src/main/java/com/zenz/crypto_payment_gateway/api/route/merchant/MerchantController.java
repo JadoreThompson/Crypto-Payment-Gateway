@@ -42,7 +42,7 @@ public class MerchantController {
 
     @GetMapping("/")
     public ResponseEntity<List<MerchantResponse>> getMerchants(@AuthenticationPrincipal User user) {
-        List<Merchant> merchants = merchantService.getMerchantsByUser(user);
+        List<Merchant> merchants = merchantService.getMerchantsByUserId(user.getUserId());
         
         List<MerchantResponse> responses = merchants.stream()
                 .map(merchantService::toResponse)

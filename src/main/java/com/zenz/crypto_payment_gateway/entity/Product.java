@@ -15,7 +15,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID productId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="merchant_id", nullable = false, updatable = false)
     private UUID merchantId;
 
     @Column(nullable = false)
@@ -30,15 +30,6 @@ public class Product {
 
     @Column(nullable = false, updatable = false)
     private long createdAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "merchant_id", nullable = false)
-    private Merchant merchant;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Price> prices;
 
     // Operations
     @PrePersist

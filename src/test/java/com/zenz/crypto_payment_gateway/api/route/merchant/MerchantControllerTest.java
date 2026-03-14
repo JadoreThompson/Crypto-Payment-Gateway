@@ -86,7 +86,6 @@ class MerchantControllerTest {
         testMerchant.setMerchantId(testMerchantId);
         testMerchant.setName(testMerchantName);
         testMerchant.setDescription(testMerchantDescription);
-        testMerchant.setUser(testUser);
         testMerchant.setCreatedAt(System.currentTimeMillis());
     }
 
@@ -151,7 +150,6 @@ class MerchantControllerTest {
         Merchant merchant = new Merchant();
         merchant.setMerchantId(testMerchantId);
         merchant.setName(testMerchantName);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -286,7 +284,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName(maxName);
         merchant.setDescription(testMerchantDescription);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -439,12 +436,11 @@ class MerchantControllerTest {
         merchant2.setMerchantId(UUID.randomUUID());
         merchant2.setName("Second Merchant");
         merchant2.setDescription("Second description");
-        merchant2.setUser(testUser);
         merchant2.setCreatedAt(System.currentTimeMillis());
 
         List<Merchant> merchants = Arrays.asList(testMerchant, merchant2);
 
-        Mockito.when(merchantService.getMerchantsByUser(testUser)).thenReturn(merchants);
+        Mockito.when(merchantService.getMerchantsByUserId(testUser.getUserId())).thenReturn(merchants);
         Mockito.when(merchantService.toResponse(testMerchant)).thenReturn(createMerchantResponse(testMerchant));
         Mockito.when(merchantService.toResponse(merchant2)).thenReturn(createMerchantResponse(merchant2));
 
@@ -461,7 +457,7 @@ class MerchantControllerTest {
     void getMerchants_whenNoMerchants_shouldReturnEmptyList() throws Exception {
         setupAuthentication();
 
-        Mockito.when(merchantService.getMerchantsByUser(testUser)).thenReturn(Collections.emptyList());
+        Mockito.when(merchantService.getMerchantsByUserId(testUser.getUserId())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/merchants/")
                 .cookie(new Cookie(JWTAuthenticationFilter.JWT_COOKIE_NAME, testToken)))
@@ -476,7 +472,7 @@ class MerchantControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/merchants/"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
-        Mockito.verify(merchantService, Mockito.never()).getMerchantsByUser(ArgumentMatchers.any());
+        Mockito.verify(merchantService, Mockito.never()).getMerchantsByUserId(ArgumentMatchers.any());
     }
 
     @Test
@@ -484,7 +480,7 @@ class MerchantControllerTest {
     void getMerchants_shouldReturnJsonContentType() throws Exception {
         setupAuthentication();
 
-        Mockito.when(merchantService.getMerchantsByUser(testUser)).thenReturn(Collections.emptyList());
+        Mockito.when(merchantService.getMerchantsByUserId(testUser.getUserId())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/merchants/")
                 .cookie(new Cookie(JWTAuthenticationFilter.JWT_COOKIE_NAME, testToken)))
@@ -506,7 +502,6 @@ class MerchantControllerTest {
         updatedMerchant.setMerchantId(testMerchantId);
         updatedMerchant.setName(newName);
         updatedMerchant.setDescription(testMerchantDescription);
-        updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
@@ -536,7 +531,6 @@ class MerchantControllerTest {
         updatedMerchant.setMerchantId(testMerchantId);
         updatedMerchant.setName(testMerchantName);
         updatedMerchant.setDescription(newDescription);
-        updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
@@ -568,7 +562,6 @@ class MerchantControllerTest {
         updatedMerchant.setMerchantId(testMerchantId);
         updatedMerchant.setName(newName);
         updatedMerchant.setDescription(newDescription);
-        updatedMerchant.setUser(testUser);
         updatedMerchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.getMerchantByIdAndUserId(testMerchantId, testUser.getUserId()))
@@ -714,7 +707,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName("'; DROP TABLE merchants;--");
         merchant.setDescription(testMerchantDescription);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -744,7 +736,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName("<script>alert('xss')</script>");
         merchant.setDescription(testMerchantDescription);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -775,7 +766,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName(specialName);
         merchant.setDescription(testMerchantDescription);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -804,7 +794,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName(unicodeName);
         merchant.setDescription(testMerchantDescription);
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))
@@ -832,7 +821,6 @@ class MerchantControllerTest {
         merchant.setMerchantId(testMerchantId);
         merchant.setName(testMerchantName);
         merchant.setDescription("");
-        merchant.setUser(testUser);
         merchant.setCreatedAt(System.currentTimeMillis());
 
         Mockito.when(merchantService.createMerchant(ArgumentMatchers.any(User.class), ArgumentMatchers.any(CreateMerchantRequest.class)))

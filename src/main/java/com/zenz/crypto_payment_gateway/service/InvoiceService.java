@@ -28,7 +28,7 @@ public class InvoiceService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Invoice createInvoice(UUID merchantId, CreateInvoiceRequest request) {
-        Customer customer = customerRepository.findByIdAndMerchantId(
+        Customer customer = customerRepository.findByCustomerIdAndMerchantId(
                 UUID.fromString(request.getCustomerId()), 
                 merchantId
         );
@@ -40,8 +40,8 @@ public class InvoiceService {
         }
 
         Invoice invoice = new Invoice();
+        invoice.setMerchantId(merchantId);
         invoice.setCustomerId(customer.getCustomerId());
-        invoice.setCustomer(customer);
         invoice.setAmountDue(request.getAmountDue());
         invoice.setCurrency(request.getCurrency());
         invoice.setStatus(InvoiceStatus.DRAFT);
@@ -68,7 +68,7 @@ public class InvoiceService {
     }
 
     public Invoice getInvoiceByIdAndMerchantId(UUID invoiceId, UUID merchantId) {
-        Invoice invoice = invoiceRepository.findByIdAndMerchantId(invoiceId, merchantId);
+        Invoice invoice = invoiceRepository.findByInvoiceIdAndMerchantId(invoiceId, merchantId);
         if (invoice == null) {
             throw new ResourceNotFound(
                     String.format("Failed to find invoice with id %s for merchant", invoiceId)

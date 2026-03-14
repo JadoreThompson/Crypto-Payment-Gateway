@@ -12,11 +12,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     List<Transaction> findByInvoiceId(UUID invoiceId);
 
-    Transaction findByIdAndInvoiceId(UUID id, UUID invoiceId);
+    Transaction findByTransactionIdAndInvoiceId(UUID id, UUID invoiceId);
 
     List<Transaction> findByMerchantId(UUID merchantId);
 
-    Transaction findByIdAndMerchantId(UUID id, UUID merchantId);
+    Transaction findByTransactionIdAndMerchantId(UUID id, UUID merchantId);
 
-    Transaction findByIdAndInvoiceIdAndMerchantId(UUID id, UUID invoiceId, UUID merchantId);
+    Transaction findByTransactionIdAndInvoiceIdAndMerchantId(UUID id, UUID invoiceId, UUID merchantId);
 }

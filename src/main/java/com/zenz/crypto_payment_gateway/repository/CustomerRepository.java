@@ -12,5 +12,5 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
     List<Customer> findByMerchantId(UUID merchantId);
 
-    Customer findByIdAndMerchantId(UUID id, UUID merchantId);
+    Customer findByCustomerIdAndMerchantId(UUID id, UUID merchantId);
 }

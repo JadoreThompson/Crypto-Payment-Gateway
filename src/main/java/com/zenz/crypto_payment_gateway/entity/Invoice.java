@@ -17,7 +17,10 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID invoiceId;
 
-    @NotNull
+    @Column(name="merchant_id" , nullable = false, updatable = false)
+    private UUID merchantId;
+
+    @Column(name="customer_id" , nullable = false, updatable = false)
     private UUID customerId;
 
     private long amountDue;
@@ -36,15 +39,6 @@ public class Invoice {
     private InvoiceStatus status;
 
     private long createdAt;
-
-    // Relationships
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
-
-    @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Transaction> transactions;
 
     // Operations
 

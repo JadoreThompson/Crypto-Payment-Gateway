@@ -12,5 +12,5 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
     List<Withdrawal> findByMerchantId(UUID merchantId);
 
-    Withdrawal findByIdAndMerchantId(UUID id, UUID merchantId);
+    Withdrawal findByWalletIdAndMerchantId(UUID id, UUID merchantId);
 }
