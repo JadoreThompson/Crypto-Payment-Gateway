@@ -52,9 +52,6 @@ class SubscriptionControllerTest {
     @MockitoBean
     private SubscriptionService subscriptionService;
 
-    @MockitoSpyBean
-    private SubscriptionService spySubscriptionService;
-
     @MockitoBean
     private MerchantService merchantService;
 

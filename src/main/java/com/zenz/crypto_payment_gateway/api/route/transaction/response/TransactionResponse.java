@@ -15,6 +15,7 @@ public class TransactionResponse {
     private String chain;
     private String senderWalletAddress;
     private String recipientWalletAddress;
+    private String txnAddress;
     private TransactionStatus status;
     private long createdAt;
     private long completedAt;

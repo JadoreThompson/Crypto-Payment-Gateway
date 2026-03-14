@@ -73,6 +73,7 @@ public class TransactionService {
         response.setAmountReceived(transaction.getAmountReceived());
         response.setCurrency(transaction.getCurrency());
         response.setChain(transaction.getChain());
+        response.setTxnAddress(transaction.getTxnAddress());
         response.setSenderWalletAddress(transaction.getSenderWalletAddress());
         response.setRecipientWalletAddress(transaction.getRecipientWalletAddress());
         response.setStatus(transaction.getStatus());
