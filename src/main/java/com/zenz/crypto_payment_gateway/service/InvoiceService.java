@@ -29,7 +29,7 @@ public class InvoiceService {
 
     public Invoice createInvoice(UUID merchantId, CreateInvoiceRequest request) {
         Customer customer = customerRepository.findByCustomerIdAndMerchantId(
-                UUID.fromString(request.getCustomerId()), 
+                request.getCustomerId(),
                 merchantId
         );
         

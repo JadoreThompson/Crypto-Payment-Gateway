@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/merchants/{merchantId}/invoice/")
+@RequestMapping("/merchants/{merchantId}/invoices/")
 @RequiredArgsConstructor
 public class InvoiceController {
 
