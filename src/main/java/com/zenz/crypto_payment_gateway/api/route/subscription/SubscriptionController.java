@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/merchants/{merchantId}/subscription/")
+@RequestMapping("/merchants/{merchantId}/subscriptions/")
 @RequiredArgsConstructor
 public class SubscriptionController {
 
