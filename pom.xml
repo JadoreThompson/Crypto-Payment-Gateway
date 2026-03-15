@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.zenz</groupId>
-	<artifactId>crypto_payment_gateway</artifactId>
+	<artifactId>neopay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>crypto_payment_gateway</name>
+	<name>neopay</name>
 	<url/>
 	<licenses>
 		<license/>

@@ -1,0 +1,77 @@
+package com.zenz.neopay.service;
+
+import com.zenz.neopay.api.error.ResourceNotFound;
+import com.zenz.neopay.api.route.product.request.CreateProductRequest;
+import com.zenz.neopay.api.route.product.request.UpdateProductRequest;
+import com.zenz.neopay.api.route.product.response.ProductResponse;
+import com.zenz.neopay.entity.Product;
+import com.zenz.neopay.repository.MerchantRepository;
+import com.zenz.neopay.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class ProductService {
+    private ProductRepository productRepository;
+    private MerchantRepository merchantRepository;
+
+    public Product createProduct(CreateProductRequest request, UUID merchantId) {
+        Product product = new Product();
+        product.setMerchantId(merchantId);
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setImage(request.getImage());
+
+        productRepository.save(product);
+        return product;
+    }
+
+    public Product getProductById(UUID id) {
+        Product product  = productRepository.findById(id).orElse(null);
+        if (product == null) {
+            throw new ResourceNotFound("Product not found");
+        }
+
+        return product;
+    }
+
+    public List<Product> getProductsByMerchantId(UUID merchantId) {
+        return productRepository.findByMerchantId(merchantId);
+    }
+
+    public Product getProductsByIdAndMerchantId(UUID id, UUID merchantId) {
+        Product product = productRepository.findByProductIdAndMerchantId(id, merchantId);
+        if (product == null) {
+            throw new ResourceNotFound(
+                    String.format("Failed to find product with id %s for merchant id %s", id, merchantId)
+            );
+        }
+        return product;
+    }
+
+    public Product updateProduct(Product product, UpdateProductRequest request) {
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setImage(request.getImage());
+
+        productRepository.save(product);
+        return product;
+    }
+
+    public ProductResponse toResponse(Product product) {
+        ProductResponse response = new ProductResponse();
+
+        response.setProductId(product.getProductId());
+        response.setMerchantId(product.getMerchantId());
+        response.setName(product.getName());
+        response.setDescription(product.getDescription());
+        response.setImage(product.getImage());
+        response.setCreatedAt(product.getCreatedAt());
+
+        return response;
+    }
+}

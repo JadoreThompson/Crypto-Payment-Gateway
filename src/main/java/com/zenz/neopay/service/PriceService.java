@@ -1,0 +1,100 @@
+package com.zenz.neopay.service;
+
+import com.zenz.neopay.api.error.ResourceNotFound;
+import com.zenz.neopay.api.route.price.model.request.CreatePriceRequest;
+import com.zenz.neopay.api.route.price.model.request.UpdatePriceRequest;
+import com.zenz.neopay.api.route.price.model.response.PriceResponse;
+import com.zenz.neopay.entity.Price;
+import com.zenz.neopay.entity.Product;
+import com.zenz.neopay.repository.PriceRepository;
+import com.zenz.neopay.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class PriceService {
+
+    private final PriceRepository priceRepository;
+    private final ProductRepository productRepository;
+
+    public Price createPrice(UUID merchantId, CreatePriceRequest request) {
+        Product product = productRepository.findByProductIdAndMerchantId(request.getProductId(), merchantId);
+        if (product == null) {
+            throw new ResourceNotFound(
+                    String.format("Failed to find product with id %s", request.getProductId())
+            );
+        }
+
+        Price price = new Price();
+        price.setMerchantId(merchantId);
+        price.setProductId(request.getProductId());
+        price.setAmount(request.getAmount());
+        price.setPricingType(request.getPricingType());
+        price.setCurrency(request.getCurrency());
+        price.setProductId(product.getProductId());
+        price.setRecurring(request.getRecurring());
+
+        return priceRepository.save(price);
+    }
+
+    public Price getPriceById(UUID priceId) {
+        return priceRepository.findById(priceId)
+                .orElseThrow(() -> new ResourceNotFound(
+                        String.format("Failed to find price with id %s", priceId)
+                ));
+    }
+
+    public Price getPriceByIdAndProductId(UUID priceId, UUID productId) {
+        Price price = priceRepository.findByPriceIdAndProductId(priceId, productId);
+        if (price == null) {
+            throw new ResourceNotFound(
+                    String.format("Failed to find price with id %s for product id %s", priceId, productId)
+            );
+        }
+        return price;
+    }
+
+    public List<Price> getPricesByMerchantId(UUID merchantId) {
+        return priceRepository.findByMerchantId(merchantId);
+    }
+
+    public List<Price> getPricesByMerchantIdAndProductId(UUID merchantId, UUID productId) {
+        return priceRepository.findByMerchantIdAndProductId(merchantId, productId);
+    }
+
+    public List<Price> getPricesByProductId(UUID productId) {
+        return priceRepository.findByProductId(productId);
+    }
+
+    public Price updatePrice(UUID priceId, UpdatePriceRequest request) {
+        Price price = getPriceById(priceId);
+        
+        if (request.getMetadata() != null) {
+            price.setMetadata(request.getMetadata());
+        }
+        
+        return priceRepository.save(price);
+    }
+
+    public void deletePrice(UUID priceId) {
+        Price price = getPriceById(priceId);
+        priceRepository.delete(price);
+    }
+
+    public PriceResponse toResponse(Price price) {
+        PriceResponse response = new PriceResponse();
+        response.setPriceId(price.getPriceId());
+        response.setProductId(price.getProductId());
+        response.setAmount(price.getAmount());
+        response.setPricingType(price.getPricingType());
+        response.setCurrency(price.getCurrency());
+        response.setRecurring(price.getRecurring());
+        response.setMetadata(price.getMetadata());
+
+        return response;
+    }
+}

@@ -1,0 +1,58 @@
+package com.zenz.neopay.api;
+
+import com.zenz.neopay.api.error.ResourceNotFound;
+import com.zenz.neopay.api.error.ServerError;
+import com.zenz.neopay.api.model.response.ErrorResponse;
+import com.zenz.neopay.api.model.response.SimpleErrorDetail;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    // 400 - 499
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException exc) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(new SimpleErrorDetail("Invalid message received")));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException exc) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(new SimpleErrorDetail("Invalid arguments received")));
+    }
+
+    @ExceptionHandler(ResourceNotFound.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFound exc) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(new SimpleErrorDetail(exc.getMessage())));
+    }
+
+    // 500 - 599
+
+    @ExceptionHandler(ServerError.class)
+    public ResponseEntity<ErrorResponse> handleServerError(ServerError exc) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(new SimpleErrorDetail(exc.getMessage())));
+    }
+
+    // Generic
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(RuntimeException exc) {
+        System.err.println(exc.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(new SimpleErrorDetail("An unexpected error occurred")));
+    }
+}
