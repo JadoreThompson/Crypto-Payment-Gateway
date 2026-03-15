@@ -1,8 +1,8 @@
 package com.zenz.crypto_payment_gateway.service.blockchain.watcher;
 
 
-import com.zenz.crypto_payment_gateway.service.blockchain.event.InvoiceCreatedEvent;
-import com.zenz.crypto_payment_gateway.service.blockchain.event.InvoiceExecutedEvent;
+import com.zenz.crypto_payment_gateway.service.blockchain.event.TransactionCreatedEvent;
+import com.zenz.crypto_payment_gateway.service.blockchain.event.TransactionExecutedEvent;
 
 public interface WatcherService {
 
@@ -10,7 +10,7 @@ public interface WatcherService {
 
     void stop();
 
-    void handleInvoiceCreated(InvoiceCreatedEvent event);
+    void handleTransactionCreated(TransactionCreatedEvent event);
 
-    void handleInvoiceExecuted(InvoiceExecutedEvent event);
+    void handleTransactionExecuted(TransactionExecutedEvent event);
 }
