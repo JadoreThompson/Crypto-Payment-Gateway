@@ -1,4 +1,4 @@
-package com.zenz.neopay.api.route.auth.model.request;
+package com.zenz.neopay.api.route.auth.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

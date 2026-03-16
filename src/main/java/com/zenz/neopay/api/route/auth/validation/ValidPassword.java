@@ -1,4 +1,4 @@
-package com.zenz.neopay.api.route.auth.model.validation;
+package com.zenz.neopay.api.route.auth.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

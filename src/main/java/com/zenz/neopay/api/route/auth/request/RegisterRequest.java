@@ -1,6 +1,6 @@
-package com.zenz.neopay.api.route.auth.model.request;
+package com.zenz.neopay.api.route.auth.request;
 
-import com.zenz.neopay.api.route.auth.model.validation.ValidPassword;
+import com.zenz.neopay.api.route.auth.validation.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.zenz.neopay.api.route.auth;
 
-import com.zenz.neopay.api.route.auth.model.request.LoginRequest;
-import com.zenz.neopay.api.route.auth.model.request.RegisterRequest;
-import com.zenz.neopay.api.route.auth.model.response.MeResponse;
+import com.zenz.neopay.api.route.auth.request.LoginRequest;
+import com.zenz.neopay.api.route.auth.request.RegisterRequest;
+import com.zenz.neopay.api.route.auth.response.MeResponse;
 import com.zenz.neopay.api.config.JWTAuthenticationFilter;
 import com.zenz.neopay.entity.User;
 import com.zenz.neopay.service.AuthService;

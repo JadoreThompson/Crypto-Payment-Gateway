@@ -19,6 +19,7 @@ import java.util.UUID;
 public class TransactionController {
 
     private final TransactionService transactionService;
+
     private final MerchantService merchantService;
 
     @GetMapping("/")

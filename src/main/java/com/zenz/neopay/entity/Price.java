@@ -23,7 +23,6 @@ public class Price {
     private UUID productId;
 
     @Column(nullable = false)
-    @Positive
     private long amount;
 
     @Column(nullable = false)

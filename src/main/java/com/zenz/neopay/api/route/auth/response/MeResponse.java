@@ -1,4 +1,4 @@
-package com.zenz.neopay.api.route.auth.model.response;
+package com.zenz.neopay.api.route.auth.response;
 
 import lombok.Data;
 
