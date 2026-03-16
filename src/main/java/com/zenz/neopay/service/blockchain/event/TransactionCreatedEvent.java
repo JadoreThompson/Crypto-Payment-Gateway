@@ -8,6 +8,7 @@ public record TransactionCreatedEvent(
         String sender,
         String recipient,
         String token,
-        long amount
+        long amount,
+        long timestamp
 ) {
 }

@@ -9,6 +9,7 @@ public record TransactionFailedEvent(
         String recipient,
         String token,
         long amount,
-        String reason
+        String reason,
+        long timestamp
 ) {
 }
