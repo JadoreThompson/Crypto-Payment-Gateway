@@ -9,7 +9,9 @@ import com.zenz.neopay.enums.Token;
 import com.zenz.neopay.event.transaction.*;
 import com.zenz.neopay.repository.EthereumWatcherEventsRepository;
 import com.zenz.neopay.repository.InvoiceRepository;
+import com.zenz.neopay.repository.MerchantRepository;
 import com.zenz.neopay.service.BalanceTransactionService;
+import com.zenz.neopay.service.WebhookService;
 import io.reactivex.disposables.Disposable;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -45,7 +47,11 @@ public class EthereumWatcherService implements WatcherService {
 
     private final InvoiceRepository invoiceRepository;
 
+    private final MerchantRepository merchantRepository;
+
     private final BalanceTransactionService balanceTransactionService;
+
+    private final WebhookService webhookService;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -226,6 +232,8 @@ public class EthereumWatcherService implements WatcherService {
             log.error("Failed to update merchant balance for invoice {}", event.invoiceId(), e);
             throw e;
         }
+
+        sendWebhookNotification(invoice.getMerchantId(), event);
     }
 
     public void handleTransactionFailed(TransactionFailedEvent event, Log logObject) throws JsonProcessingException {
@@ -236,6 +244,26 @@ public class EthereumWatcherService implements WatcherService {
     @Override
     public void handleTransactionFailed(TransactionFailedEvent event) {
         log.info("Handling transaction failed event {}", event.toString());
+
+        Invoice invoice = invoiceRepository.findById(event.invoiceId()).orElse(null);
+        if (invoice == null) {
+            log.warn("Could not find invoice with id {}", event.invoiceId());
+            return;
+        }
+
+        sendWebhookNotification(invoice.getMerchantId(), event);
+    }
+
+    private void sendWebhookNotification(UUID merchantId, TransactionEvent event) {
+        merchantRepository.findById(merchantId).ifPresent(merchant -> {
+            String webhookUrl = merchant.getWebhookUrl();
+            if (webhookUrl != null && !webhookUrl.isBlank()) {
+                log.info("Queuing webhook for merchant {} to URL: {}", merchantId, webhookUrl);
+                webhookService.sendRequest(event, webhookUrl);
+            } else {
+                log.debug("No webhook URL configured for merchant {}", merchantId);
+            }
+        });
     }
 
     @PreDestroy

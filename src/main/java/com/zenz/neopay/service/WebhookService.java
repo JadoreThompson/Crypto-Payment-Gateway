@@ -1,9 +1,7 @@
 package com.zenz.neopay.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +23,7 @@ public class WebhookService {
     private final RestTemplate restTemplate = new RestTemplate();
     
     private final BlockingQueue<WebhookTask> webhookQueue = new LinkedBlockingQueue<>();
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
     private volatile boolean running = true;
 
     public WebhookService() {

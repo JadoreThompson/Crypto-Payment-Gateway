@@ -21,6 +21,8 @@ public class Merchant {
 
     private String description;
 
+    private String webhookUrl;
+
     @Column(nullable = false, updatable = false)
     private long createdAt;
 
